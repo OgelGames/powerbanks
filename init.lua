@@ -143,6 +143,17 @@ local function register_powerbank(data)
 			return 0
 		end,
 
+		after_place_node = function(pos, placer, itemstack, pointed_thing)
+			local node_meta = minetest.get_meta(pos)
+
+			node_meta:get_inventory():set_size("main", data.charging_slots)
+			node_meta:set_string("owner", placer:get_player_name())
+			node_meta:set_string("formspec", formspec)
+			node_meta:set_int("EU_charge", itemstack:get_meta():get_int("charge"))
+
+			update_infotext(pos, false)
+		end,
+
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
 			local timer = minetest.get_node_timer(pos)
 			if not timer:is_started() then
@@ -189,35 +200,24 @@ local function register_powerbank(data)
 
 		on_place = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.above
-			local placer_name = placer:get_player_name()
 
-			if minetest.is_protected(pos, placer_name) then
-				return itemstack
-			end
-			
-			local fake_itemstack = ItemStack({name = "powerbanks:powerbank_mk"..data.mark.."_node", count = 1})
-			local placed = false
-			
-			fake_itemstack, placed = minetest.item_place_node(fake_itemstack, placer, pointed_thing)
-			
-			if not placed then
+			if minetest.is_protected(pos, placer:get_player_name()) then
 				return itemstack
 			end
 
-			local node_meta = minetest.get_meta(pos)
 			local item_meta = minetest.deserialize(itemstack:get_metadata()) or {}
 			if not item_meta.charge then
 				item_meta.charge = 0
 			end
-
-			node_meta:get_inventory():set_size("main", data.charging_slots)
-			node_meta:set_string("owner", placer_name)
-			node_meta:set_string("formspec", formspec)
-			node_meta:set_int("EU_charge", item_meta.charge)
+			local fake_itemstack = ItemStack({name = "powerbanks:powerbank_mk"..data.mark.."_node", count = 1})
+			fake_itemstack:get_meta():set_int("charge", item_meta.charge)
+			local placed = false
 			
-			update_infotext(pos, false)
+			fake_itemstack, placed = minetest.item_place(fake_itemstack, placer, pointed_thing)
 
-			itemstack:clear()
+			if placed then
+				itemstack:clear()
+			end
 			return itemstack
 		end
 	})
