@@ -19,7 +19,8 @@ Currently there are three different powerbanks:
   - Charging slots: 1
   
   - Recipe:
-    ![Mk1 Recipe](screenshots/mk1_recipe.png?raw=true "Mk1 Recipe")
+  
+  ![Mk1 Recipe](screenshots/mk1_recipe.png?raw=true "Mk1 Recipe")
 
 - #### Powerbank Mk2
   
@@ -28,7 +29,8 @@ Currently there are three different powerbanks:
   - Charging slots: 2
   
   - Recipe:
-    ![Mk2 Recipe](screenshots/mk2_recipe.png?raw=true "Mk2 Recipe")
+  
+  ![Mk2 Recipe](screenshots/mk2_recipe.png?raw=true "Mk2 Recipe")
 
 - #### Powerbank Mk3
   
@@ -37,7 +39,8 @@ Currently there are three different powerbanks:
   - Charging slots: 3
   
   - Recipe:
-    ![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe")
+  
+  ![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe")
 
 ## 
 
