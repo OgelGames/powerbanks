@@ -52,8 +52,7 @@ local function register_powerbank(data)
 		local item_max_charge = technic.power_tools[item:get_name()]
 		local item_charge = item_meta.charge
 
-		charge_step = math.min(charge_step, powerbank_charge)
-		charge_step = math.min(charge_step, item_max_charge - item_charge)
+		charge_step = math.min(charge_step, item_max_charge - item_charge, powerbank_charge)
 		item_charge = item_charge + charge_step
 		powerbank_charge = powerbank_charge - charge_step
 
@@ -72,7 +71,7 @@ local function register_powerbank(data)
 
 		for i = 1, inv:get_size("main") do
 			local stack = inv:get_stack("main", i)
-			local item_fully_charged = false
+			local item_fully_charged
 			if (not stack:is_empty()) and (current_charge > 0) then
 				stack, current_charge, item_fully_charged = charge_item(stack, current_charge, charge_step)
 				inv:set_stack("main", i, stack)
@@ -95,7 +94,7 @@ local function register_powerbank(data)
 		end
 
 		local extension = ""
-		if is_node then 
+		if is_node then
 			extension = "_node"
 		end
 
@@ -126,26 +125,26 @@ local function register_powerbank(data)
 		is_ground_content = false,
 		drop = {},
 
-		can_dig = function(pos, player)
-			if not player then
-				return false
-			end
+		can_dig = function(pos, digger)
+			if not digger then return end
 
+			-- check if the digger is the owner
 			local meta = minetest.get_meta(pos)
-			local node_inv = meta:get_inventory()
-
-			if not is_owner(pos, player) then
-				minetest.chat_send_player(player:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
+			if not is_owner(pos, digger) then
+				minetest.chat_send_player(digger:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
 				return false
 			end
+
+			-- check if inventory is empty
+			local node_inv = meta:get_inventory()
 			if not node_inv:is_empty("main") then
-				minetest.chat_send_player(player:get_player_name(), "Powerbank cannot be removed because it is not empty")
+				minetest.chat_send_player(digger:get_player_name(), "Powerbank cannot be removed because it is not empty")
 				return false
 			end
 
 			return true
 		end,
-		
+
 		allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 			if is_owner(pos, player) then
 				return count
@@ -167,12 +166,13 @@ local function register_powerbank(data)
 
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local node_meta = minetest.get_meta(pos)
-			local stack_meta = minetest.deserialize(itemstack:get_metadata()) or {}
+			local itemstack_meta = minetest.deserialize(itemstack:get_metadata()) or {}
 
+			-- set node metadata
 			node_meta:get_inventory():set_size("main", data.charging_slots)
-			node_meta:set_string("owner", placer:get_player_name())
 			node_meta:set_string("formspec", formspec)
-			node_meta:set_int("charge", stack_meta.charge)
+			node_meta:set_string("owner", placer:get_player_name())
+			node_meta:set_int("charge", itemstack_meta.charge)
 
 			update_infotext(pos, false)
 		end,
@@ -180,7 +180,7 @@ local function register_powerbank(data)
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
 			local timer = minetest.get_node_timer(pos)
 			if not timer:is_started() then
-				timer:start(charge_time)
+				timer:start(charge_time) -- start charging item immediately
 			end
 		end,
 
@@ -189,9 +189,10 @@ local function register_powerbank(data)
 		end,
 
 		after_dig_node = function(pos, node, metadata, player)
-
+			-- create item to give player
 			local item = create_itemstack({charge = metadata.fields.charge}, false)
 
+			-- give the item, or drop if inventory is full
 			local player_inv = player:get_inventory()
 			if player_inv:room_for_item("main", item) then
 				player_inv:add_item("main", item)
@@ -213,16 +214,18 @@ local function register_powerbank(data)
 		on_refill = technic.refill_RE_charge,
 
 		on_place = function(itemstack, placer, pointed_thing)
-
+			-- create fake itemstack of node to place
 			local item_meta = minetest.deserialize(itemstack:get_metadata()) or {}
-			local fake_itemstack = create_itemstack(item_meta, true)
-			local placed = false
-			
-			fake_itemstack, placed = minetest.item_place(fake_itemstack, placer, pointed_thing)
+			local node_itemstack = create_itemstack(item_meta, true)
 
+			-- place node like player
+			local _, placed = minetest.item_place(node_itemstack, placer, pointed_thing)
+
+			-- remove powerbank from inventory if placed
 			if placed then
 				itemstack:clear()
 			end
+
 			return itemstack
 		end
 	})
