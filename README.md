@@ -1,5 +1,6 @@
 # powerbanks
 
+[![Build Status](https://travis-ci.org/OgelGames/powerbanks.svg?branch=master)](https://travis-ci.org/OgelGames/powerbanks)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-brightgreen.svg)](LICENSE.md)
 
 ## Overview
