@@ -1,6 +1,6 @@
 # powerbanks
 
-[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-brightgreen.svg)](LICENSE.md)
 
 ## Overview
 
@@ -40,10 +40,12 @@ Currently there are three different powerbanks:
   
   - Recipe:
   
-  ![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe")
-
-## 
+  ![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe") 
 
 ## Dependencies
 
 Currently this mod only depends on the [technic](https://github.com/minetest-mods/technic) mod.
+
+## License
+
+Except for the exceptions stated in [LICENSE.md](LICENSE.md#exceptions), all code is licensed under the [MIT License](LICENSE.md#mit-license), with all other assets licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license).
