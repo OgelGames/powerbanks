@@ -90,7 +90,7 @@ local function register_powerbank(data)
 
 	local function create_itemstack(metadata, is_node)
 		if not metadata.charge then
-			metadata.charge = 1
+			metadata.charge = 0
 		end
 
 		local extension = ""
@@ -167,6 +167,10 @@ local function register_powerbank(data)
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local node_meta = minetest.get_meta(pos)
 			local itemstack_meta = minetest.deserialize(itemstack:get_metadata()) or {}
+
+			if not itemstack_meta.charge then
+				itemstack_meta.charge = 0
+			end
 
 			-- set node metadata
 			node_meta:get_inventory():set_size("main", data.charging_slots)
