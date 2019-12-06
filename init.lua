@@ -189,7 +189,8 @@ local function register_powerbank(data)
 		end,
 
 		on_timer = function(pos, elapsed)
-			return do_charging(pos, data.charge_step)
+		local steps = math.floor((elapsed / charge_time) + 0.5)
+			return do_charging(pos, steps * data.charge_step)
 		end,
 
 		after_dig_node = function(pos, node, metadata, player)
