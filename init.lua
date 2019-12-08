@@ -30,7 +30,22 @@ local function register_powerbank(data)
 		"list[current_name;main;0,0.25;4,1;]" ..
 		"list[current_player;main;0,2;8,4;]" ..
 		"listring[current_name;main]" ..
-		"listring[current_player;main]"
+		"listring[current_player;main]" ..
+		"image[5.4,0.2;3,1;powerbanks_battery_bg.png]"
+
+	local function update_formspec(pos, charge)
+		local fraction = charge / data.max_charge
+
+		local red = math.min(510 - (510 * fraction), 255)
+		local green = math.min(510 * fraction, 255)
+		local color = "#"..string.format("%02X", red)..string.format("%02X", green).."00FF"
+
+		local new_formspec = formspec..
+			"box[5.45,0.25;"..(fraction * 2.12)..",0.8;"..color.."]"
+
+		minetest.get_meta(pos):set_string("formspec", new_formspec)
+		return true
+	end
 
 	local function update_infotext(pos, is_charging)
 		local meta = minetest.get_meta(pos)
@@ -84,6 +99,7 @@ local function register_powerbank(data)
 
 		meta:set_int("charge", current_charge)
 		update_infotext(pos, still_charging)
+		update_formspec(pos, current_charge)
 
 		return still_charging and (current_charge > 0)
 	end
@@ -179,6 +195,7 @@ local function register_powerbank(data)
 			node_meta:set_int("charge", itemstack_meta.charge)
 
 			update_infotext(pos, false)
+			update_formspec(pos, itemstack_meta.charge)
 		end,
 
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
