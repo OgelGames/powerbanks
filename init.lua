@@ -139,23 +139,7 @@ local function register_powerbank(data)
 		is_ground_content = false,
 		drop = {},
 		can_dig = function(pos, digger)
-			if not digger then return end
-
-			-- check if the digger is the owner
-			local meta = minetest.get_meta(pos)
-			if not is_owner(pos, digger) then
-				minetest.chat_send_player(digger:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
-				return false
-			end
-
-			-- check if inventory is empty
-			local node_inv = meta:get_inventory()
-			if not node_inv:is_empty("main") then
-				minetest.chat_send_player(digger:get_player_name(), "Powerbank cannot be removed because it is not empty")
-				return false
-			end
-
-			return true
+			return false
 		end,
 		allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 			if is_owner(pos, player) then
@@ -200,9 +184,25 @@ local function register_powerbank(data)
 			local steps = math.floor((elapsed / charge_time) + 0.5)
 			return do_charging(pos, steps * data.charge_step, data)
 		end,
-		after_dig_node = function(pos, node, metadata, player)
+		on_punch = function(pos, node, player)
+			if not player then return end
+			local meta = minetest.get_meta(pos)
+			
+			-- check if the player is the owner
+			if not is_owner(pos, player) then
+				minetest.chat_send_player(player:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
+				return
+			end
+
+			-- check if inventory is empty
+			local node_inv = meta:get_inventory()
+			if not node_inv:is_empty("main") then
+				minetest.chat_send_player(player:get_player_name(), "Powerbank cannot be removed because it is not empty")
+				return
+			end
+			
 			-- create item to give player
-			local item = create_itemstack({charge = metadata.fields.charge}, false, data)
+			local item = create_itemstack({charge = meta:get_int("charge")}, false, data)
 
 			-- give the item, or drop if inventory is full
 			local player_inv = player:get_inventory()
@@ -211,6 +211,8 @@ local function register_powerbank(data)
 			else
 				minetest.add_item(pos, item)
 			end
+			
+			minetest.remove_node(pos)
 		end
 	})
 
