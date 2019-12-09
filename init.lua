@@ -24,12 +24,13 @@ local function is_chargeable(stack)
 end
 
 local base_formspec =
-	"size[8,6]" ..
-	"list[current_name;main;0,0.25;4,1;]" ..
-	"list[current_player;main;0,2;8,4;]" ..
-	"listring[current_name;main]" ..
-	"listring[current_player;main]" ..
-	"image[5.4,0.2;3,1;powerbanks_battery_bg.png]"
+	"size[8,7.25]"..
+	"list[current_name;main;0,1.25;4,1;]"..
+	"list[current_player;main;0,3.5;8,4;]"..
+	"listring[current_name;main]"..
+	"listring[current_player;main]"..
+	"image[5.4,1.2;3,1;powerbanks_battery_bg.png]"..
+	"label[0,2.25;Charging Slots]"
 
 local function update_formspec(pos, charge, data)
 	local fraction = charge / data.max_charge
@@ -38,7 +39,10 @@ local function update_formspec(pos, charge, data)
 	local green = math.min(510 * fraction, 255)
 	local color = "#"..string.format("%02X", red)..string.format("%02X", green).."00FF"
 
-	local new_formspec = base_formspec.."box[5.45,0.25;"..(fraction * 2.12)..",0.8;"..color.."]"
+	local new_formspec = base_formspec..
+		"label[0,0;Powerbank Mk"..data.mark.."]"..
+		"label[5.4,2.25;Power Remaining: "..technic.EU_string(charge).."]"..
+		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
 end
 
