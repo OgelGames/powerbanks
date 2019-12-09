@@ -167,7 +167,6 @@ local function register_powerbank(data)
 			end
 
 			node_meta:get_inventory():set_size("main", data.charging_slots)
-			node_meta:set_string("formspec", formspec)
 			node_meta:set_string("owner", placer:get_player_name())
 			node_meta:set_int("charge", itemstack_meta.charge)
 
@@ -187,7 +186,7 @@ local function register_powerbank(data)
 		on_punch = function(pos, node, player)
 			if not player then return end
 			local meta = minetest.get_meta(pos)
-			
+
 			-- check if the player is the owner
 			if not is_owner(pos, player) then
 				minetest.chat_send_player(player:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
@@ -200,7 +199,7 @@ local function register_powerbank(data)
 				minetest.chat_send_player(player:get_player_name(), "Powerbank cannot be removed because it is not empty")
 				return
 			end
-			
+
 			-- create item to give player
 			local item = create_itemstack({charge = meta:get_int("charge")}, false, data)
 
@@ -211,7 +210,7 @@ local function register_powerbank(data)
 			else
 				minetest.add_item(pos, item)
 			end
-			
+
 			minetest.remove_node(pos)
 		end
 	})
