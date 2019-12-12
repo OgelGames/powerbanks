@@ -135,9 +135,10 @@ local function register_powerbank(data)
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png", -- z+ back
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png" -- z- front
 		},
-		groups = {oddly_breakable_by_hand = 1, not_in_creative_inventory = 1},
+		groups = {not_in_creative_inventory = 1},
 		is_ground_content = false,
-		drop = {},
+		drop = "",
+		diggable = false,
 		can_dig = function(pos, digger)
 			return false
 		end,
