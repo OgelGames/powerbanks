@@ -3,11 +3,40 @@
 [![Build Status](https://travis-ci.org/OgelGames/powerbanks.svg?branch=master)](https://travis-ci.org/OgelGames/powerbanks)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-brightgreen.svg)](LICENSE.md)
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Usage](#usage)
+- [Powerbank versions](#powerbank-versions)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [License](#license)
+
 ## Overview
 
 This mod adds portable powerbanks used to charge technic tools.
 
 ![Overview Screenshot](screenshots/overview.png?raw=true "Overview Screenshot") 
+
+## Features
+
+- **Fully portable** - charge will remain no matter how many times you place and pick it up!
+- **Self-protected** - no need to worry about leaving your powerbank while it's charging your tools, only you can pick it up!
+- **Fast charging** - each version charges faster than its technic battery equivalent.
+- **Multiple charging slots** - powerbanks can charge more than one tool at once! (except for Mk1)
+
+## Usage
+
+1. Obtain a powerbank (obviously :P).
+2. Charge the powerbank in a technic battery.
+
+![Charging a Powerbank](screenshots/charging.png?raw=true "Charging a Powerbank")
+
+3. Place the powerbank down in the world, and open it by interacting with it.
+4. Put your tool(s) in the charging slot(s) and watch them charge! (or leave it to charge while you do something else...)
+
+![Powerbank Formspec](screenshots/formspec.png?raw=true "Powerbank Formspec")
 
 ## Powerbank versions
 
@@ -46,6 +75,14 @@ Currently there are three different powerbanks:
 ## Dependencies
 
 Currently this mod only depends on the [technic](https://github.com/minetest-mods/technic) mod.
+
+## Installation
+
+To install this mod, simply download it using one of the methods below, and place it in one of [Minetest's mod folders](https://dev.minetest.net/Installing_Mods).
+
+- Clone the Git repository using `git clone https://github.com/OgelGames/powerbanks.git` or the [GitHub Desktop](https://desktop.github.com/) app.
+- Download the Git repository as a ZIP file: https://github.com/OgelGames/powerbanks/archive/master.zip
+- Download the latest stable release: https://github.com/OgelGames/powerbanks/releases
 
 ## License
 
