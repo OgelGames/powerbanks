@@ -5,7 +5,7 @@
 
 ## Overview
 
-This mod adds portable powerbanks that can be used to recharge technic tools (including those from other mods).
+This mod adds portable powerbanks used to charge technic tools.
 
 ![Overview Screenshot](screenshots/overview.png?raw=true "Overview Screenshot") 
 
