@@ -14,10 +14,7 @@ end
 
 local function is_chargeable(stack)
 	local item_name = stack:get_name()
-	if not technic.power_tools[item_name] then
-		return false
-	end
-	if item_name:find("powerbanks:powerbank") then
+	if (not technic.power_tools[item_name]) or item_name:find("powerbanks:powerbank") then
 		return false
 	end
 	return true
@@ -173,6 +170,8 @@ local function register_powerbank(data)
 
 			update_infotext(pos, false, data)
 			update_formspec(pos, itemstack_meta.charge, data)
+
+			minetest.sound_play({name = "default_place_node_hard"}, {pos = pos})
 		end,
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
 			local timer = minetest.get_node_timer(pos)
@@ -212,6 +211,7 @@ local function register_powerbank(data)
 				minetest.add_item(pos, item)
 			end
 
+			minetest.sound_play({name = "default_dug_node"}, {pos = pos})
 			minetest.remove_node(pos)
 		end
 	})

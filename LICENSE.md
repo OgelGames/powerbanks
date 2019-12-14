@@ -1,6 +1,6 @@
 ## License
 
-Except for the exceptions stated below, all code is licensed under the [MIT License](LICENSE.md#mit-license), with all other assets licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license). 
+Except for the exceptions stated below, all code is licensed under the [MIT License](LICENSE.md#mit-license), with textures licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license). 
 
 ## Exceptions
 

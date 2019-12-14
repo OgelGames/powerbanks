@@ -1,7 +1,7 @@
 # powerbanks
 
 [![Build Status](https://travis-ci.org/OgelGames/powerbanks.svg?branch=master)](https://travis-ci.org/OgelGames/powerbanks)
-[![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-brightgreen.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-green.svg)](LICENSE.md)
 
 ## Table of Contents
 
@@ -23,13 +23,13 @@ This mod adds portable powerbanks used to charge technic tools.
 
 - **Fully portable** - charge will remain no matter how many times you place and pick it up!
 - **Self-protected** - no need to worry about leaving your powerbank while it's charging your tools, only you can pick it up!
-- **Fast charging** - each version charges faster than its technic battery equivalent.
+- **Fast charging** - each version charges faster than its technic battery equivalent (LV, MV, HV).
 - **Multiple charging slots** - powerbanks can charge more than one tool at once! (except for Mk1)
 
 ## Usage
 
 1. Obtain a powerbank (obviously :P).
-2. Charge the powerbank in a technic battery.
+2. Charge the powerbank.
 
 ![Charging a Powerbank](screenshots/charging.png?raw=true "Charging a Powerbank")
 
@@ -74,7 +74,7 @@ Currently there are three different powerbanks:
 
 ## Dependencies
 
-Currently this mod only depends on the [technic](https://github.com/minetest-mods/technic) mod.
+Currently this mod only depends on the default and [technic](https://github.com/minetest-mods/technic) mods.
 
 ## Installation
 
@@ -86,4 +86,4 @@ To install this mod, simply download it using one of the methods below, and plac
 
 ## License
 
-Except for the exceptions stated in [LICENSE.md](LICENSE.md#exceptions), all code is licensed under the [MIT License](LICENSE.md#mit-license), with all other assets licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license).
+Except for the exceptions stated in [LICENSE.md](LICENSE.md#exceptions), all code is licensed under the [MIT License](LICENSE.md#mit-license), with textures licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license).
