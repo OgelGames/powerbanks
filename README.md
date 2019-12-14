@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/OgelGames/powerbanks.svg?branch=master)](https://travis-ci.org/OgelGames/powerbanks)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-green.svg)](LICENSE.md)
+[![Feedback](https://img.shields.io/badge/Feedback-Minetest%20Forum-lightgrey.svg)](https://forum.minetest.net/viewtopic.php?t=23791)
+[![Download](https://img.shields.io/badge/Download-ContentDB-blue.svg)](https://content.minetest.net/packages/OgelGames/powerbanks)
 
 ## Table of Contents
 
