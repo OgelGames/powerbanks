@@ -1,6 +1,6 @@
 ## License
 
-Except for the exceptions stated below, all code is licensed under the [MIT License](LICENSE.md#mit-license), with textures licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license). 
+Except for the exceptions stated below, all code is licensed under the [MIT License](LICENSE.md#mit-license), with all textures, models, sounds, and other media licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license). 
 
 ## Exceptions
 
@@ -8,11 +8,15 @@ For [powerbanks_base.png](textures/powerbanks_base.png), which is renamed from s
 
 - CC-BY-SA 3.0 UNPORTED. Created by DOOMED
 
+## Notes
+
+-
+
 ## MIT License
 
 MIT License
 
-Copyright (c) 2019 OgelGames
+Copyright (c) 2019-2020 OgelGames
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

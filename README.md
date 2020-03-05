@@ -88,4 +88,4 @@ To install this mod, simply download it using one of the methods below, and plac
 
 ## License
 
-Except for the exceptions stated in [LICENSE.md](LICENSE.md#exceptions), all code is licensed under the [MIT License](LICENSE.md#mit-license), with textures licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license).
+Except for any exceptions stated in [LICENSE.md](LICENSE.md#exceptions), all code is licensed under the [MIT License](LICENSE.md#mit-license), with all textures, models, sounds, and other media licensed under the [CC BY-SA 4.0 License](LICENSE.md#cc-by-sa-40-license). 
