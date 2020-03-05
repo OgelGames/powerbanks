@@ -1,4 +1,4 @@
-# powerbanks
+# Powerbanks [powerbanks]
 
 [![Build Status](https://travis-ci.org/OgelGames/powerbanks.svg?branch=master)](https://travis-ci.org/OgelGames/powerbanks)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-green.svg)](LICENSE.md)
@@ -76,7 +76,7 @@ Currently there are three different powerbanks:
 
 ## Dependencies
 
-Currently this mod only depends on the default and [technic](https://github.com/minetest-mods/technic) mods.
+Currently this mod only depends on `default` from [Minetest Game](https://github.com/minetest/minetest_game), and [`technic`](https://github.com/minetest-mods/technic).
 
 ## Installation
 
