@@ -82,10 +82,6 @@ Currently there are three different powerbanks:
 
 - [`technic`](https://github.com/minetest-mods/technic)
 
-**Optional**
-
--
-
 ## Installation
 
 Download the [master branch](https://github.com/OgelGames/powerbanks/archive/master.zip) or the [latest release](https://github.com/OgelGames/powerbanks/releases), or clone the repository using Git or the [GitHub Desktop](https://desktop.github.com/) app, and follow [these instructions](https://dev.minetest.net/Installing_Mods).
