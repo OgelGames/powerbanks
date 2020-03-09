@@ -38,15 +38,15 @@ local function update_formspec(pos, charge, data)
 
 	local new_formspec = base_formspec..
 		"label[0,0;Powerbank Mk"..data.mark.."]"..
-		"label[5.4,2.25;Power Remaining: "..technic.EU_string(charge).."]"..
+		"label[5.4,2.25;Power Remaining: "..technic.pretty_num(charge).."EU]"..
 		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
 end
 
 local function update_infotext(pos, is_charging, data)
 	local meta = minetest.get_meta(pos)
-	local current_charge = technic.EU_string(meta:get_int("charge"))
-	local max_charge = technic.EU_string(data.max_charge)
+	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
+	local max_charge = technic.pretty_num(data.max_charge).."EU"
 
 	local status = "Idle"
 	if is_charging then
