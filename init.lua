@@ -227,18 +227,27 @@ local function register_powerbank(data)
 		wear_represents = "technic_RE_charge",
 		on_refill = technic.refill_RE_charge,
 		on_place = function(itemstack, placer, pointed_thing)
+			-- check for on_rightclick
+			if pointed_thing.type == "node" and placer and not placer:get_player_control().sneak then
+				local node = minetest.get_node(pointed_thing.under)
+				local def = minetest.registered_nodes[node.name]
+				if def and def.on_rightclick then
+					return def.on_rightclick(pointed_thing.under, node, placer, itemstack, pointed_thing) or itemstack, false
+				end
+			end
+
 			-- create fake itemstack of node to place
 			local item_meta = minetest.deserialize(itemstack:get_metadata()) or {}
 			local node_itemstack = create_itemstack(item_meta, true, data)
 
 			-- place node like player
-			local _, placed = minetest.item_place(node_itemstack, placer, pointed_thing)
+			local new_itemstack, placed = minetest.item_place_node(node_itemstack, placer, pointed_thing)
 
 			-- remove powerbank from inventory if placed
-			if placed then
+			if placed or new_itemstack:is_empty() then
 				itemstack:clear()
 			end
-			return itemstack
+			return itemstack, placed
 		end
 	})
 
