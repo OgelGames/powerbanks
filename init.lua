@@ -125,7 +125,7 @@ local function register_powerbank(data)
 		},
 		groups = {not_in_creative_inventory = 1},
 		is_ground_content = false,
-		drop = "",
+		drop = "powerbanks:powerbank_mk"..data.mark,
 		diggable = false,
 		can_dig = function(pos, digger)
 			return false
