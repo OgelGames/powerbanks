@@ -40,6 +40,7 @@ local function update_formspec(pos, charge, data)
 		"label[0,0;Powerbank Mk"..data.mark.."]"..
 		"label[5.4,2.25;Power Remaining: "..technic.pretty_num(charge).."EU]"..
 		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
+
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
 end
 
@@ -47,13 +48,10 @@ local function update_infotext(pos, is_charging, data)
 	local meta = minetest.get_meta(pos)
 	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
 	local max_charge = technic.pretty_num(data.max_charge).."EU"
-
-	local status = "Idle"
-	if is_charging then
-		status = "Charging"
-	end
+	local status = is_charging and "Charging" or "Idle"
 
 	local infotext = "Powerbank Mk"..data.mark..": "..current_charge.." / "..max_charge.." "..status
+
 	meta:set_string("infotext", infotext)
 end
 
@@ -85,7 +83,7 @@ local function do_charging(pos, charge_step, data)
 	for i = 1, inv:get_size("main") do
 		local stack = inv:get_stack("main", i)
 		local item_fully_charged
-		if (not stack:is_empty()) and (current_charge > 0) then
+		if current_charge > 0 and not stack:is_empty()then
 			stack, current_charge, item_fully_charged = charge_item(stack, current_charge, charge_step)
 			inv:set_stack("main", i, stack)
 
@@ -99,24 +97,17 @@ local function do_charging(pos, charge_step, data)
 	update_infotext(pos, still_charging, data)
 	update_formspec(pos, current_charge, data)
 
-	return still_charging and (current_charge > 0)
+	return still_charging and current_charge > 0
 end
 
 local function create_itemstack(metadata, is_node, data)
-	if not metadata.charge then
-		metadata.charge = 0
-	end
-	local extension = ""
-	if is_node then
-		extension = "_node"
-	end
 	local itemstack = ItemStack({
-		name = "powerbanks:powerbank_mk"..data.mark..extension,
+		name = "powerbanks:powerbank_mk"..data.mark..(is_node and "_node" or ""),
 		count = 1,
-		metadata = minetest.serialize({charge = metadata.charge})
+		metadata = minetest.serialize({charge = metadata.charge or 0})
 	})
 	if not is_node then
-		technic.set_RE_wear(itemstack, metadata.charge, data.max_charge)
+		technic.set_RE_wear(itemstack, metadata.charge or 0, data.max_charge)
 	end
 	return itemstack
 end
