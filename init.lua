@@ -1,3 +1,6 @@
+-- Translation support
+local S = minetest.get_translator("powerbanks")
+
 local charge_time = 1
 
 local function is_owner(pos, player)
@@ -27,18 +30,17 @@ local base_formspec =
 	"listring[current_name;main]"..
 	"listring[current_player;main]"..
 	"image[5.4,1.2;3,1;powerbanks_battery_bg.png]"..
-	"label[0,2.25;Charging Slots]"
+	"label[0,2.25;"..S("Charging Slots").."]"
 
 local function update_formspec(pos, charge, data)
 	local fraction = charge / data.max_charge
-
 	local red = math.min(510 - (510 * fraction), 255)
 	local green = math.min(510 * fraction, 255)
 	local color = "#"..string.format("%02X", red)..string.format("%02X", green).."00FF"
 
 	local new_formspec = base_formspec..
-		"label[0,0;Powerbank Mk"..data.mark.."]"..
-		"label[5.4,2.25;Power Remaining: "..technic.pretty_num(charge).."EU]"..
+		"label[0,0;"..S("Powerbank Mk@1", data.mark).."]"..
+		"label[5.4,2.25;"..S("Power Remaining: @1", technic.pretty_num(charge)).."EU]"..
 		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
 
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
@@ -48,9 +50,8 @@ local function update_infotext(pos, is_charging, data)
 	local meta = minetest.get_meta(pos)
 	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
 	local max_charge = technic.pretty_num(data.max_charge).."EU"
-	local status = is_charging and "Charging" or "Idle"
-
-	local infotext = "Powerbank Mk"..data.mark..": "..current_charge.." / "..max_charge.." "..status
+	local status = is_charging and S("Charging") or S("Idle")
+	local infotext = S("Powerbank Mk@1: @2 / @3 @4", data.mark, current_charge, max_charge, status)
 
 	meta:set_string("infotext", infotext)
 end
@@ -114,7 +115,7 @@ end
 
 local function register_powerbank(data)
 	minetest.register_node("powerbanks:powerbank_mk"..data.mark.."_node", {
-		description = "Powerbank Mk"..data.mark.." Node",
+		description = S("Powerbank Mk@1 Node", data.mark),
 		tiles = {
 			"powerbanks_base.png", -- y+ top
 			"powerbanks_base.png", -- y- bottom
@@ -180,14 +181,14 @@ local function register_powerbank(data)
 
 			-- check if the player is the owner
 			if not is_owner(pos, player) then
-				minetest.chat_send_player(player:get_player_name(), "Powerbank is owned by "..meta:get_string("owner"))
+				minetest.chat_send_player(player:get_player_name(), S("Powerbank is owned by @1", meta:get_string("owner")))
 				return
 			end
 
 			-- check if inventory is empty
 			local node_inv = meta:get_inventory()
 			if not node_inv:is_empty("main") then
-				minetest.chat_send_player(player:get_player_name(), "Powerbank cannot be removed because it is not empty")
+				minetest.chat_send_player(player:get_player_name(), S("Powerbank cannot be removed because it is not empty"))
 				return
 			end
 
@@ -208,7 +209,7 @@ local function register_powerbank(data)
 	})
 
 	minetest.register_tool("powerbanks:powerbank_mk"..data.mark, {
-		description = "Powerbank Mk"..data.mark,
+		description = S("Powerbank Mk@1", data.mark),
 		inventory_image = minetest.inventorycube(
 			"powerbanks_base.png",
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
