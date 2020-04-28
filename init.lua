@@ -38,10 +38,9 @@ local function update_formspec(pos, charge, data)
 	local green = math.min(510 * fraction, 255)
 	local color = "#"..string.format("%02X", red)..string.format("%02X", green).."00FF"
 
-	---@type table
 	local new_formspec = base_formspec..
-		"label[0,0;"..S("Powerbank Mk@1]", data.mark)..
-		"label[5.4,2.25;"..S("Power Remaining: @1EU]", technic.pretty_num(charge))..
+		"label[0,0;"..S("Powerbank Mk@1", data.mark).."]"..
+		"label[5.4,2.25;"..S("Power Remaining: @1", technic.pretty_num(charge)).."EU]"..
 		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
 
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
@@ -49,8 +48,8 @@ end
 
 local function update_infotext(pos, is_charging, data)
 	local meta = minetest.get_meta(pos)
-	local current_charge = technic.pretty_num(meta:get_int("charge")).." EU"
-	local max_charge = technic.pretty_num(data.max_charge).." EU"
+	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
+	local max_charge = technic.pretty_num(data.max_charge).."EU"
 	local status = is_charging and S("Charging") or S("Idle")
 	local infotext = S("Powerbank Mk@1: @2 / @3 @4", data.mark, current_charge, max_charge, status)
 
