@@ -49,9 +49,9 @@ end
 
 local function update_infotext(pos, is_charging, data)
 	local meta = minetest.get_meta(pos)
-	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
-	local max_charge = technic.pretty_num(data.max_charge).."EU"
-	local status = is_charging and "Charging" or "Idle"
+	local current_charge = technic.pretty_num(meta:get_int("charge")).." EU"
+	local max_charge = technic.pretty_num(data.max_charge).." EU"
+	local status = is_charging and S("Charging") or S("Idle")
 	local infotext = S("Powerbank Mk@1: @2 / @3 @4", data.mark, current_charge, max_charge, status)
 
 	meta:set_string("infotext", infotext)
