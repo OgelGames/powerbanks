@@ -64,6 +64,10 @@ local function charge_item(item, powerbank_charge, charge_step)
 	local item_max_charge = technic.power_tools[item:get_name()]
 	local item_charge = item_meta.charge
 
+	if not item_max_charge or not item_charge then
+		return item, powerbank_charge, true
+	end
+
 	charge_step = math.min(charge_step, item_max_charge - item_charge, powerbank_charge)
 	item_charge = item_charge + charge_step
 	powerbank_charge = powerbank_charge - charge_step
