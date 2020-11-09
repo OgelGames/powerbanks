@@ -25,9 +25,9 @@ end
 
 local base_formspec =
 	"size[8,7.25]"..
-	"list[current_name;main;0,1.25;4,1;]"..
+	"list[context;main;0,1.25;4,1;]"..
 	"list[current_player;main;0,3.5;8,4;]"..
-	"listring[current_name;main]"..
+	"listring[context;main]"..
 	"listring[current_player;main]"..
 	"image[5.4,1.2;3,1;powerbanks_battery_bg.png]"..
 	"label[0,2.25;"..S("Charging Slots").."]"
