@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Replaced deprecated `current_name` formspec element.
+
+## [1.0.2] - 2020-10-12
+
+### Added
+
+- Translation support.
+- French translation.
+
+### Fixed
+
+- Crash that can happen because of an engine bug in Minetest 5.3.0 and earlier.
+
 ## [1.0.1] - 2020-04-05
 
 ### Changed
@@ -23,5 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Initial versioned release.
 
-[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/OgelGames/powerbanks/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/OgelGames/powerbanks/compare/v1.0.0...v1.0.1
