@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.3] - 2020-12-20
+
+### Changed
+
+- Losslessly optimized textures.
+
 ### Fixed
 
 - Replaced deprecated `current_name` formspec element.
@@ -38,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Initial versioned release.
 
-[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/OgelGames/powerbanks/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/OgelGames/powerbanks/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/OgelGames/powerbanks/compare/v1.0.0...v1.0.1
