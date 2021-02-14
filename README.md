@@ -20,7 +20,7 @@
 
 This mod adds portable powerbanks used to charge technic tools.
 
-![Overview Screenshot](screenshots/overview.png?raw=true "Overview Screenshot") 
+![Overview Screenshot](images/overview.png?raw=true "Overview Screenshot") 
 
 ## Features
 
@@ -34,12 +34,12 @@ This mod adds portable powerbanks used to charge technic tools.
 1. Obtain a powerbank (obviously :P).
 2. Charge the powerbank.
 
-![Charging a Powerbank](screenshots/charging.png?raw=true "Charging a Powerbank")
+![Charging a Powerbank](images/charging.png?raw=true "Charging a Powerbank")
 
 3. Place the powerbank down in the world, and open it by interacting with it.
 4. Put your tool(s) in the charging slot(s) and watch them charge! (or leave it to charge while you do something else...)
 
-![Powerbank Formspec](screenshots/formspec.png?raw=true "Powerbank Formspec")
+![Powerbank Formspec](images/formspec.png?raw=true "Powerbank Formspec")
 
 ## Powerbank versions
 
@@ -50,21 +50,21 @@ Currently there are three different powerbanks:
 - Capacity: 300kEU
 - Charging slots: 1
 
-![Mk1 Recipe](screenshots/mk1_recipe.png?raw=true "Mk1 Recipe")
+![Mk1 Recipe](images/mk1_recipe.png?raw=true "Mk1 Recipe")
 
 **Powerbank Mk2**
 
 - Capacity: 600kEU
 - Charging slots: 2
 
-![Mk2 Recipe](screenshots/mk2_recipe.png?raw=true "Mk2 Recipe")
+![Mk2 Recipe](images/mk2_recipe.png?raw=true "Mk2 Recipe")
 
 **Powerbank Mk3**
 
 - Capacity: 1200kEU
 - Charging slots: 3
 
-![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe") 
+![Mk3 Recipe](images/mk3_recipe.png?raw=true "Mk3 Recipe") 
 
 ## Dependencies
 
