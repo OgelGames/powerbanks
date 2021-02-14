@@ -2,7 +2,8 @@
 
 [![luacheck](https://github.com/OgelGames/powerbanks/workflows/luacheck/badge.svg)](https://github.com/OgelGames/powerbanks/actions)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-green.svg)](LICENSE.md)
-[![Minetest%20Forum](https://img.shields.io/badge/Minetest%20Forum-Feedback-lightgrey.svg)](https://forum.minetest.net/viewtopic.php?t=23791)
+[![Minetest](https://img.shields.io/badge/Minetest-5.0+-blue.svg)](https://www.minetest.net)
+[![Forum](https://img.shields.io/badge/Minetest-Forum-lightgrey.svg)](https://forum.minetest.net/viewtopic.php?t=23791)
 [![ContentDB](https://content.minetest.net/packages/OgelGames/powerbanks/shields/downloads/)](https://content.minetest.net/packages/OgelGames/powerbanks/)
 
 ## Table of Contents
@@ -44,49 +45,39 @@ This mod adds portable powerbanks used to charge technic tools.
 
 Currently there are three different powerbanks:
 
-- #### Powerbank Mk1
-  
-  - Capacity: 300kEU
-  
-  - Charging slots: 1
-  
-  - Recipe:
-  
-  ![Mk1 Recipe](screenshots/mk1_recipe.png?raw=true "Mk1 Recipe")
+**Powerbank Mk1**
 
-- #### Powerbank Mk2
-  
-  - Capacity: 600kEU
-  
-  - Charging slots: 2
-  
-  - Recipe:
-  
-  ![Mk2 Recipe](screenshots/mk2_recipe.png?raw=true "Mk2 Recipe")
+- Capacity: 300kEU
+- Charging slots: 1
 
-- #### Powerbank Mk3
-  
-  - Capacity: 1200kEU
-  
-  - Charging slots: 3
-  
-  - Recipe:
-  
-  ![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe") 
+![Mk1 Recipe](screenshots/mk1_recipe.png?raw=true "Mk1 Recipe")
+
+**Powerbank Mk2**
+
+- Capacity: 600kEU
+- Charging slots: 2
+
+![Mk2 Recipe](screenshots/mk2_recipe.png?raw=true "Mk2 Recipe")
+
+**Powerbank Mk3**
+
+- Capacity: 1200kEU
+- Charging slots: 3
+
+![Mk3 Recipe](screenshots/mk3_recipe.png?raw=true "Mk3 Recipe") 
 
 ## Dependencies
 
 **Required**
 
 - `default` (included in [Minetest Game](https://github.com/minetest/minetest_game))
-
 - [`technic`](https://github.com/minetest-mods/technic)
 
 ## Installation
 
-Download the [master branch](https://github.com/OgelGames/powerbanks/archive/master.zip) or the [latest release](https://github.com/OgelGames/powerbanks/releases), or clone the repository using Git or the [GitHub Desktop](https://desktop.github.com/) app, and follow [these instructions](https://dev.minetest.net/Installing_Mods).
+Download the [master branch](https://github.com/OgelGames/powerbanks/archive/master.zip) or the [latest release](https://github.com/OgelGames/powerbanks/releases), or clone the repository using Git or the [GitHub Desktop](https://desktop.github.com/) app, and follow [the usual installation steps](https://dev.minetest.net/Installing_Mods).
 
-Alternatively, you can download and install the mod from [ContentDB](https://content.minetest.net/packages/OgelGames/powerbanks) from the online content tab in Minetest.
+Alternatively, you can download and install the mod from [ContentDB](https://content.minetest.net/packages/OgelGames/powerbanks) or the online content tab in Minetest.
 
 ## License
 
