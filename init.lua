@@ -126,7 +126,7 @@ local function create_stack(charge, is_node, data)
 end
 
 local function register_powerbank(data)
-	minetest.register_node("powerbanks:powerbank_mk"..data.mark.."_node", {
+	local node_def =  {
 		description = S("Powerbank Mk@1 Node", data.mark),
 		tiles = {
 			"powerbanks_base.png",
@@ -217,18 +217,16 @@ local function register_powerbank(data)
 			minetest.sound_play({name = "default_dug_node"}, {pos = pos})
 			minetest.remove_node(pos)
 		end
-	})
+	}
 
-	minetest.register_tool("powerbanks:powerbank_mk"..data.mark, {
+	local tool_def = {
 		description = S("Powerbank Mk@1", data.mark),
 		inventory_image = minetest.inventorycube(
 			"powerbanks_base.png",
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png"
 		),
-		stack_max = 1,
-		wear_represents = "technic_RE_charge",
-		on_refill = technic.refill_RE_charge,
+		max_charge = data.max_charge,
 		on_place = function(stack, player, pointed)
 			-- Check for on_rightclick if player is not holding sneak
 			if pointed.type == "node" and player and not player:get_player_control().sneak then
@@ -248,9 +246,18 @@ local function register_powerbank(data)
 			end
 			return stack, placed
 		end
-	})
+	}
 
-	technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, data.max_charge)
+	minetest.register_node("powerbanks:powerbank_mk"..data.mark.."_node", node_def)
+
+	if technic.plus then
+		technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, tool_def)
+	else
+		tool_def.wear_represents = "technic_RE_charge"
+		tool_def.on_refill = technic.refill_RE_charge
+		minetest.register_tool("powerbanks:powerbank_mk"..data.mark, tool_def)
+		technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, data.max_charge)
+	end
 
 	minetest.register_craft({
 		output = "powerbanks:powerbank_mk"..data.mark,
