@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.4] - 2022-06-08
+
+### Added
+
+- Support for Technic Plus tool API.
+
+### Fixed
+
+- Replaced deprecated item metadata access.
+
 ## [1.0.3] - 2020-12-20
 
 ### Changed
@@ -44,7 +54,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Initial versioned release.
 
-[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/OgelGames/powerbanks/compare/v1.0.4...HEAD
+[1.0.3]: https://github.com/OgelGames/powerbanks/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/OgelGames/powerbanks/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/OgelGames/powerbanks/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/OgelGames/powerbanks/compare/v1.0.0...v1.0.1
