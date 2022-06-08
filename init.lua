@@ -118,13 +118,6 @@ local function do_charging(pos, charge_step, data)
 	return still_charging and current_charge > 0
 end
 
-local function create_stack(charge, is_node, data)
-	local name = "powerbanks:powerbank_mk"..data.mark..(is_node and "_node" or "")
-	local stack = ItemStack(name)
-	set_charge(stack, charge or 0)
-	return stack
-end
-
 local function register_powerbank(data)
 	local node_def =  {
 		description = S("Powerbank Mk@1 Node", data.mark),
@@ -163,7 +156,7 @@ local function register_powerbank(data)
 		end,
 		after_place_node = function(pos, player, stack, pointed)
 			local meta = minetest.get_meta(pos)
-			local charge = get_charge(stack)
+			local charge = stack:get_meta():get_int("charge")
 
 			meta:get_inventory():set_size("main", data.charging_slots)
 			meta:set_string("owner", player:get_player_name())
@@ -204,7 +197,8 @@ local function register_powerbank(data)
 			end
 
 			-- Create item to give player
-			local stack = create_stack(meta:get_int("charge"), false, data)
+			local stack = ItemStack("powerbanks:powerbank_mk"..data.mark)
+			set_charge(stack, meta:get_int("charge"))
 
 			-- Give the item, or drop if inventory is full
 			local player_inv = player:get_inventory()
@@ -238,7 +232,8 @@ local function register_powerbank(data)
 			end
 
 			-- Create fake node itemstack and place like player
-			local node_stack = create_stack(get_charge(stack), true, data)
+			local node_stack = ItemStack("powerbanks:powerbank_mk"..data.mark.."_node")
+			node_stack:get_meta():set_int("charge", get_charge(stack))
 			local new_stack, placed = minetest.item_place_node(node_stack, player, pointed)
 
 			if placed or new_stack:is_empty() then
