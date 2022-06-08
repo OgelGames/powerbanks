@@ -1,3 +1,4 @@
+
 -- Translation support
 local S = minetest.get_translator("powerbanks")
 
@@ -16,8 +17,8 @@ local function is_owner(pos, player)
 end
 
 local function is_chargeable(stack)
-	local item_name = stack:get_name()
-	if (not technic.power_tools[item_name]) or item_name:find("powerbanks:powerbank") then
+	local name = stack:get_name()
+	if not technic.power_tools[name] or name:find("powerbanks:powerbank") then
 		return false
 	end
 	return true
@@ -36,7 +37,7 @@ local function update_formspec(pos, charge, data)
 	local fraction = charge / data.max_charge
 	local red = math.min(510 - (510 * fraction), 255)
 	local green = math.min(510 * fraction, 255)
-	local color = "#"..string.format("%02X", red)..string.format("%02X", green).."00FF"
+	local color = string.format("#%02X%02X00FF", red, green)
 
 	local new_formspec = base_formspec..
 		"label[0,0;"..S("Powerbank Mk@1", data.mark).."]"..
@@ -51,32 +52,44 @@ local function update_infotext(pos, is_charging, data)
 	local current_charge = technic.pretty_num(meta:get_int("charge")).."EU"
 	local max_charge = technic.pretty_num(data.max_charge).."EU"
 	local status = is_charging and S("Charging") or S("Idle")
+
 	local infotext = S("Powerbank Mk@1: @2 / @3 @4", data.mark, current_charge, max_charge, status)
 
 	meta:set_string("infotext", infotext)
 end
 
-local function charge_item(item, powerbank_charge, charge_step)
-	local item_meta = minetest.deserialize(item:get_metadata()) or {}
-	if not item_meta.charge then
-		item_meta.charge = 0
-	end
-	local item_max_charge = technic.power_tools[item:get_name()]
-	local item_charge = item_meta.charge
+local function set_charge(stack, charge)
+	local meta = stack:get_meta()
+	local metadata = minetest.deserialize(meta:get_string("")) or {}
+	metadata.charge = charge
+	meta:set_string("", minetest.serialize(metadata))
+	technic.set_RE_wear(stack, charge, technic.power_tools[stack:get_name()])
+end
 
-	if not item_max_charge or not item_charge then
-		return item, powerbank_charge, true
+local function get_charge(stack)
+	local meta = stack:get_meta()
+	local metadata = minetest.deserialize(meta:get_string("")) or {}
+	return metadata.charge or 0
+end
+
+if technic.plus then
+	set_charge = technic.set_RE_charge
+	get_charge = technic.get_RE_charge
+end
+
+local function charge_item(stack, powerbank_charge, charge_step)
+	if not is_chargeable(stack) then
+		return powerbank_charge, true
 	end
+	local item_max_charge = technic.power_tools[stack:get_name()]
+	local item_charge = get_charge(stack)
 
 	charge_step = math.min(charge_step, item_max_charge - item_charge, powerbank_charge)
 	item_charge = item_charge + charge_step
 	powerbank_charge = powerbank_charge - charge_step
+	set_charge(stack, item_charge)
 
-	technic.set_RE_wear(item, item_charge, item_max_charge)
-	item_meta.charge = item_charge
-	item:set_metadata(minetest.serialize(item_meta))
-
-	return item, powerbank_charge, (item_charge == item_max_charge)
+	return powerbank_charge, (item_charge == item_max_charge)
 end
 
 local function do_charging(pos, charge_step, data)
@@ -85,11 +98,11 @@ local function do_charging(pos, charge_step, data)
 	local inv = meta:get_inventory()
 	local still_charging = false
 
-	for i = 1, inv:get_size("main") do
+	for i=1, inv:get_size("main") do
 		local stack = inv:get_stack("main", i)
 		local item_fully_charged
-		if current_charge > 0 and not stack:is_empty()then
-			stack, current_charge, item_fully_charged = charge_item(stack, current_charge, charge_step)
+		if current_charge > 0 and not stack:is_empty() then
+			current_charge, item_fully_charged = charge_item(stack, current_charge, charge_step)
 			inv:set_stack("main", i, stack)
 
 			if not item_fully_charged then
@@ -99,34 +112,22 @@ local function do_charging(pos, charge_step, data)
 	end
 
 	meta:set_int("charge", current_charge)
-	update_infotext(pos, still_charging, data)
 	update_formspec(pos, current_charge, data)
+	update_infotext(pos, still_charging, data)
 
 	return still_charging and current_charge > 0
 end
 
-local function create_itemstack(metadata, is_node, data)
-	local itemstack = ItemStack({
-		name = "powerbanks:powerbank_mk"..data.mark..(is_node and "_node" or ""),
-		count = 1,
-		metadata = minetest.serialize({charge = metadata.charge or 0})
-	})
-	if not is_node then
-		technic.set_RE_wear(itemstack, metadata.charge or 0, data.max_charge)
-	end
-	return itemstack
-end
-
 local function register_powerbank(data)
-	minetest.register_node("powerbanks:powerbank_mk"..data.mark.."_node", {
+	local node_def =  {
 		description = S("Powerbank Mk@1 Node", data.mark),
 		tiles = {
-			"powerbanks_base.png", -- y+ top
-			"powerbanks_base.png", -- y- bottom
-			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png", -- x+ right
-			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png", -- x- left
-			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png", -- z+ back
-			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png" -- z- front
+			"powerbanks_base.png",
+			"powerbanks_base.png",
+			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
+			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
+			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
+			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png"
 		},
 		groups = {not_in_creative_inventory = 1},
 		is_ground_content = false,
@@ -153,26 +154,23 @@ local function register_powerbank(data)
 			end
 			return 0
 		end,
-		after_place_node = function(pos, placer, itemstack, pointed_thing)
-			local node_meta = minetest.get_meta(pos)
-			local itemstack_meta = minetest.deserialize(itemstack:get_metadata()) or {}
-			if not itemstack_meta.charge then
-				itemstack_meta.charge = 0 -- set default charge (in case node was obtained with /give)
-			end
+		after_place_node = function(pos, player, stack, pointed)
+			local meta = minetest.get_meta(pos)
+			local charge = stack:get_meta():get_int("charge")
 
-			node_meta:get_inventory():set_size("main", data.charging_slots)
-			node_meta:set_string("owner", placer:get_player_name())
-			node_meta:set_int("charge", itemstack_meta.charge)
+			meta:get_inventory():set_size("main", data.charging_slots)
+			meta:set_string("owner", player:get_player_name())
+			meta:set_int("charge", charge)
 
+			update_formspec(pos, charge, data)
 			update_infotext(pos, false, data)
-			update_formspec(pos, itemstack_meta.charge, data)
 
 			minetest.sound_play({name = "default_place_node_hard"}, {pos = pos})
 		end,
 		on_metadata_inventory_put = function(pos, listname, index, stack, player)
 			local timer = minetest.get_node_timer(pos)
 			if not timer:is_started() then
-				timer:start(charge_time) -- start charging item immediately
+				timer:start(charge_time)  -- Start charging item
 			end
 		end,
 		on_timer = function(pos, elapsed)
@@ -183,71 +181,78 @@ local function register_powerbank(data)
 			if not player then return end
 			local meta = minetest.get_meta(pos)
 
-			-- check if the player is the owner
 			if not is_owner(pos, player) then
-				minetest.chat_send_player(player:get_player_name(), S("Powerbank is owned by @1", meta:get_string("owner")))
+				minetest.chat_send_player(player:get_player_name(),
+					S("Powerbank is owned by @1", meta:get_string("owner"))
+				)
 				return
 			end
 
-			-- check if inventory is empty
 			local node_inv = meta:get_inventory()
 			if not node_inv:is_empty("main") then
-				minetest.chat_send_player(player:get_player_name(), S("Powerbank cannot be removed because it is not empty"))
+				minetest.chat_send_player(player:get_player_name(),
+					S("Powerbank cannot be removed because it is not empty")
+				)
 				return
 			end
 
-			-- create item to give player
-			local item = create_itemstack({charge = meta:get_int("charge")}, false, data)
+			-- Create item to give player
+			local stack = ItemStack("powerbanks:powerbank_mk"..data.mark)
+			set_charge(stack, meta:get_int("charge"))
 
-			-- give the item, or drop if inventory is full
+			-- Give the item, or drop if inventory is full
 			local player_inv = player:get_inventory()
-			if player_inv:room_for_item("main", item) then
-				player_inv:add_item("main", item)
+			if player_inv:room_for_item("main", stack) then
+				player_inv:add_item("main", stack)
 			else
-				minetest.add_item(pos, item)
+				minetest.add_item(pos, stack)
 			end
 
 			minetest.sound_play({name = "default_dug_node"}, {pos = pos})
 			minetest.remove_node(pos)
 		end
-	})
+	}
 
-	minetest.register_tool("powerbanks:powerbank_mk"..data.mark, {
+	local tool_def = {
 		description = S("Powerbank Mk@1", data.mark),
 		inventory_image = minetest.inventorycube(
 			"powerbanks_base.png",
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png",
 			"powerbanks_base.png^powerbanks_overlay_mk"..data.mark..".png"
 		),
-		stack_max = 1,
-		wear_represents = "technic_RE_charge",
-		on_refill = technic.refill_RE_charge,
-		on_place = function(itemstack, placer, pointed_thing)
-			-- check for on_rightclick
-			if pointed_thing.type == "node" and placer and not placer:get_player_control().sneak then
-				local node = minetest.get_node(pointed_thing.under)
+		max_charge = data.max_charge,
+		on_place = function(stack, player, pointed)
+			-- Check for on_rightclick if player is not holding sneak
+			if pointed.type == "node" and player and not player:get_player_control().sneak then
+				local node = minetest.get_node(pointed.under)
 				local def = minetest.registered_nodes[node.name]
 				if def and def.on_rightclick then
-					return def.on_rightclick(pointed_thing.under, node, placer, itemstack, pointed_thing) or itemstack, false
+					return def.on_rightclick(pointed.under, node, player, stack, pointed) or stack, false
 				end
 			end
 
-			-- create fake itemstack of node to place
-			local item_meta = minetest.deserialize(itemstack:get_metadata()) or {}
-			local node_itemstack = create_itemstack(item_meta, true, data)
+			-- Create fake node itemstack and place like player
+			local node_stack = ItemStack("powerbanks:powerbank_mk"..data.mark.."_node")
+			node_stack:get_meta():set_int("charge", get_charge(stack))
+			local new_stack, placed = minetest.item_place_node(node_stack, player, pointed)
 
-			-- place node like player
-			local new_itemstack, placed = minetest.item_place_node(node_itemstack, placer, pointed_thing)
-
-			-- remove powerbank from inventory if placed
-			if placed or new_itemstack:is_empty() then
-				itemstack:clear()
+			if placed or new_stack:is_empty() then
+				stack:clear()
 			end
-			return itemstack, placed
+			return stack, placed
 		end
-	})
+	}
 
-	technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, data.max_charge)
+	minetest.register_node("powerbanks:powerbank_mk"..data.mark.."_node", node_def)
+
+	if technic.plus then
+		technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, tool_def)
+	else
+		tool_def.wear_represents = "technic_RE_charge"
+		tool_def.on_refill = technic.refill_RE_charge
+		minetest.register_tool("powerbanks:powerbank_mk"..data.mark, tool_def)
+		technic.register_power_tool("powerbanks:powerbank_mk"..data.mark, data.max_charge)
+	end
 
 	minetest.register_craft({
 		output = "powerbanks:powerbank_mk"..data.mark,
@@ -259,7 +264,7 @@ local function register_powerbank(data)
 	})
 end
 
-register_powerbank({ -- Powerbank Mk1
+register_powerbank({  -- Powerbank Mk1
 	mark = 1,
 	max_charge = 300000,
 	charge_step = 3000,
@@ -268,7 +273,7 @@ register_powerbank({ -- Powerbank Mk1
 	craft_crystal = "technic:red_energy_crystal",
 })
 
-register_powerbank({ -- Powerbank Mk2
+register_powerbank({  -- Powerbank Mk2
 	mark = 2,
 	max_charge = 600000,
 	charge_step = 6000,
@@ -277,7 +282,7 @@ register_powerbank({ -- Powerbank Mk2
 	craft_crystal = "technic:green_energy_crystal"
 })
 
-register_powerbank({ -- Powerbank Mk3
+register_powerbank({  -- Powerbank Mk3
 	mark = 3,
 	max_charge = 1200000,
 	charge_step = 12000,
