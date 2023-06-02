@@ -75,7 +75,7 @@ Currently there are three different powerbanks:
 
 ## Installation
 
-Download the [master branch](https://github.com/OgelGames/powerbanks/archive/master.zip) or the [latest release](https://github.com/OgelGames/powerbanks/releases), and follow [the usual installation steps](https://dev.minetest.net/Installing_Mods).
+Download the [master branch](https://github.com/OgelGames/powerbanks/archive/master.zip) or the [latest release](https://github.com/OgelGames/powerbanks/releases), and follow [the usual installation steps](https://wiki.minetest.net/Installing_Mods).
 
 Alternatively, you can download and install the mod from [ContentDB](https://content.minetest.net/packages/OgelGames/powerbanks) or the online content tab in Minetest.
 
