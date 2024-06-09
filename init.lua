@@ -58,24 +58,38 @@ local function update_infotext(pos, is_charging, data)
 	meta:set_string("infotext", infotext)
 end
 
-local function set_charge(stack, charge)
-	local meta = stack:get_meta()
-	local metadata = minetest.deserialize(meta:get_string("")) or {}
-	metadata.charge = charge
-	meta:set_string("", minetest.serialize(metadata))
-	technic.set_RE_wear(stack, charge, technic.power_tools[stack:get_name()])
-end
-
-local function get_charge(stack)
-	local meta = stack:get_meta()
-	local metadata = minetest.deserialize(meta:get_string("")) or {}
-	return metadata.charge or 0
-end
+local set_charge
+local get_charge
 
 if technic.plus then
-	set_charge = technic.set_RE_charge
-	get_charge = technic.get_RE_charge
+
+set_charge = technic.set_RE_charge
+get_charge = technic.get_RE_charge
+
+else
+
+-- copied from technic battery source code
+get_charge = function (itemstack)
+	-- check if is chargable
+	local tool_name = itemstack:get_name()
+	if not technic.power_tools[tool_name] then
+		return 0, 0
+	end
+	local item_meta = technic.get_stack_meta(itemstack)
+	return item_meta:get_int("technic:charge"), technic.power_tools[tool_name]
 end
+
+set_charge = function (itemstack, charge)
+	local tool_name = itemstack:get_name()
+	if technic.power_tools[tool_name] then
+		technic.set_RE_wear(itemstack, charge, technic.power_tools[tool_name])
+	end
+	local item_meta = technic.get_stack_meta(itemstack)
+	item_meta:set_int("technic:charge", charge)
+end
+-- end copied from technic battery source code
+
+end -- if technic.plus
 
 local function charge_item(stack, powerbank_charge, charge_step)
 	if not is_chargeable(stack) then
@@ -88,7 +102,6 @@ local function charge_item(stack, powerbank_charge, charge_step)
 	item_charge = item_charge + charge_step
 	powerbank_charge = powerbank_charge - charge_step
 	set_charge(stack, item_charge)
-
 	return powerbank_charge, (item_charge == item_max_charge)
 end
 
@@ -110,7 +123,6 @@ local function do_charging(pos, charge_step, data)
 			end
 		end
 	end
-
 	meta:set_int("charge", current_charge)
 	update_formspec(pos, current_charge, data)
 	update_infotext(pos, still_charging, data)
@@ -162,7 +174,7 @@ local function register_powerbank(data)
 			meta:set_string("owner", player:get_player_name())
 			meta:set_int("charge", charge)
 
-			update_formspec(pos, charge, data)
+			update_formspec(pos, meta:get_int("charge"), data)
 			update_infotext(pos, false, data)
 
 			minetest.sound_play({name = "default_place_node_hard"}, {pos = pos})
@@ -198,6 +210,7 @@ local function register_powerbank(data)
 
 			-- Create item to give player
 			local stack = ItemStack("powerbanks:powerbank_mk"..data.mark)
+
 			set_charge(stack, meta:get_int("charge"))
 
 			-- Give the item, or drop if inventory is full
