@@ -41,7 +41,7 @@ local function update_formspec(pos, charge, data)
 
 	local new_formspec = base_formspec..
 		"label[0,0;"..S("Powerbank Mk@1", data.mark).."]"..
-		"label[5.4,2.25;"..S("Power Remaining: @1", technic.pretty_num(charge)).."EU]"..
+		"label[5.4,2.25;"..S("@1", technic.pretty_num(charge)).."EU]"..
 		"box[5.45,1.25;"..(fraction * 2.12)..",0.8;"..color.."]"
 
 	minetest.get_meta(pos):set_string("formspec", new_formspec)
