@@ -75,6 +75,9 @@ end
 if technic.plus then
 	set_charge = technic.set_RE_charge
 	get_charge = technic.get_RE_charge
+elseif technic.set_charge and technic.get_charge then
+	set_charge = technic.set_charge
+	get_charge = technic.get_charge
 end
 
 local function charge_item(stack, powerbank_charge, charge_step)
