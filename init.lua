@@ -85,12 +85,22 @@ local function charge_item(stack, powerbank_charge, charge_step)
 		return powerbank_charge, true
 	end
 	local item_max_charge = technic.power_tools[stack:get_name()]
-	local item_charge = get_charge(stack)
+	local item_def = stack:get_definition()
+	local item_charge
+	if item_def.technic_get_charge then
+		item_charge = item_def.technic_get_charge(stack)
+	else
+		item_charge = get_charge(stack)
+	end
 
 	charge_step = math.min(charge_step, item_max_charge - item_charge, powerbank_charge)
 	item_charge = item_charge + charge_step
 	powerbank_charge = powerbank_charge - charge_step
-	set_charge(stack, item_charge)
+	if item_def.technic_set_charge then
+		item_def.technic_set_charge(stack, item_charge)
+	else
+		set_charge(stack, item_charge)
+	end
 
 	return powerbank_charge, (item_charge == item_max_charge)
 end
@@ -293,3 +303,4 @@ register_powerbank({  -- Powerbank Mk3
 	craft_base = "powerbanks:powerbank_mk2",
 	craft_crystal = "technic:blue_energy_crystal"
 })
+
