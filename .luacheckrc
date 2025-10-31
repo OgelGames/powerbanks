@@ -1,13 +1,10 @@
 unused_args = false
 
 globals = {
-    "minetest",
+    "core",
 }
 
 read_globals = {
-	-- Builtin
 	"ItemStack",
-	
-	-- Mod Deps
 	"technic",
 }
